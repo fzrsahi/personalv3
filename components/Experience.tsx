@@ -42,7 +42,7 @@ export const Experience = () => {
                
                {/* Commit Hash & Date */}
                <div className="flex items-center gap-4 text-xs text-gray-400 font-mono mb-2">
-                  <span className="text-sand font-bold">{Math.random().toString(16).substr(2, 7)}</span>
+                  <span className="text-sand font-bold">{commitHashes[index]}</span>
                   <span>{exp.period}</span>
                </div>
 
