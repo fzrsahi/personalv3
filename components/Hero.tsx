@@ -2,20 +2,25 @@
 
 import { personalInfo } from '@/data/resume';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { useActiveCommand } from '@/contexts/ActiveCommandContext';
 
 export const Hero = () => {
   const [commandText, setCommandText] = useState('');
   const [showOutput, setShowOutput] = useState(false);
   const [showImageModal, setShowImageModal] = useState(false);
+  const { setActiveCommand } = useActiveCommand();
+  const sectionRef = useRef<HTMLElement>(null);
   const command = "whoami";
+  const navbarCommand = "whoami.txt";
 
   useEffect(() => {
     let i = 0;
+    setCommandText(''); // Reset command text
     const timer = setInterval(() => {
       if (i < command.length) {
-        setCommandText(prev => prev + command.charAt(i));
+        setCommandText(command.substring(0, i + 1));
         i++;
       } else {
         clearInterval(timer);
@@ -25,10 +30,55 @@ export const Hero = () => {
       }
     }, 150);
     return () => clearInterval(timer);
-  }, []);
+  }, [command]);
+
+  // Intersection Observer to detect when section is in viewport
+  useEffect(() => {
+    const currentSection = sectionRef.current;
+    if (!currentSection) return;
+
+    const checkVisibility = () => {
+      const rect = currentSection.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const headerHeight = 48;
+      
+      // Section is active when it's visible in the upper portion of viewport
+      // Top of section should be below header and above 70% of viewport
+      const isInActiveZone = rect.top >= headerHeight && rect.top < windowHeight * 0.7 && rect.bottom > headerHeight + 50;
+      
+      if (isInActiveZone) {
+        setActiveCommand(navbarCommand);
+      }
+    };
+
+    // Initial check with delay to ensure DOM is ready
+    const timeoutId = setTimeout(() => {
+      requestAnimationFrame(checkVisibility);
+    }, 150);
+
+    // Debounced scroll handler
+    let scrollTimeout: NodeJS.Timeout;
+    const handleScroll = () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        requestAnimationFrame(checkVisibility);
+      }, 10);
+    };
+
+    // Check on scroll and resize
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearTimeout(scrollTimeout);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [setActiveCommand, navbarCommand]);
 
   return (
-    <section className="min-h-[90vh] pt-24 pb-12 px-6 md:px-12 flex flex-col justify-center bg-paper relative overflow-hidden">
+    <section ref={sectionRef} className="min-h-[90vh] pt-24 pb-12 px-6 md:px-12 flex flex-col justify-center bg-paper relative overflow-hidden">
        <div className="max-w-6xl w-full mx-auto z-10">
          {/* Terminal Window */}
          <div className="bg-white border-2 border-grid rounded-lg shadow-lg overflow-hidden">
@@ -97,7 +147,7 @@ export const Hero = () => {
                    <div className="text-gray-500">$ cat ~/about/status.txt</div>
                    <div className="text-green-600">Available for hire</div>
                    <div className="text-gray-500">$ cat ~/about/location.txt</div>
-                   <div className="text-sand">Tokyo, Japan</div>
+                   <div className="text-sand">Jakarta, Indonesia</div>
                    <div className="text-gray-500">$ cat ~/about/description.txt</div>
                    <div className="text-sand max-w-3xl">{personalInfo.summary}</div>
                  </div>

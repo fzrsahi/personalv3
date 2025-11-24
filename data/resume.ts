@@ -10,7 +10,7 @@ export const personalInfo = {
 
 export const experiences: ExperienceItem[] = [
   {
-    company: "80&Co Tokyo, Japan",
+    company: "80&Co Kyoto, Japan",
     role: "Software Developer",
     period: "Dec 2024 - Present",
     description: [
@@ -58,4 +58,10 @@ export const skills: SkillCategory[] = [
     skills: ["AWS (EC2, RDS)", "Docker", "CI/CD", "Git", "Linux", "Unit Testing", "Swagger"]
   }
 ];
+
+export const contactInfo = {
+  email: "fazrul.anugrah17@gmail.com",
+  github: "https://github.com/fzrsahi",
+  linkedin: "https://www.linkedin.com/in/fzrsahi/",
+}
 

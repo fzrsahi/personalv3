@@ -2,18 +2,44 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useActiveCommand } from '@/contexts/ActiveCommandContext';
 
 export const Header = () => {
-  const [activeTab, setActiveTab] = useState('#main');
+  const [manualTab, setManualTab] = useState(() => {
+    if (typeof window === 'undefined') return '#main';
+    return window.location.hash || '#main';
+  });
+  const { activeCommand } = useActiveCommand();
   
+  // Map command to tab ID
+  const commandToTabMap: Record<string, string> = useMemo(() => ({
+    'whoami.txt': '#main',
+    'git log --graph --oneline': '#experience',
+    'stack.config.json': '#skills',
+    'contact.sh': '#contact',
+  }), []);
+
+  // Listen for hash changes to keep manual tab in sync
+  useEffect(() => {
+    const handleHashChange = () => {
+      setManualTab(window.location.hash || '#main');
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  const activeTab = activeCommand && commandToTabMap[activeCommand]
+    ? commandToTabMap[activeCommand]
+    : manualTab;
+
   // Listen for hash changes to update active tab state manually if needed
   // Simple implementation for single page
   const links = [
-    { name: 'main.tsx', href: '#', id: '#main' },
+    { name: 'whoami.txt', href: '#', id: '#main' },
     { name: 'experience.log', href: '#experience', id: '#experience' },
     { name: 'stack.config.json', href: '#skills', id: '#skills' },
-    { name: 'contact.sh', href: 'mailto:fazrul.anugrah17@gmail.com', id: 'mail' },
+    { name: 'contact.sh', href: '#contact', id: '#contact' },
   ];
 
   return (
@@ -33,7 +59,7 @@ export const Header = () => {
           <Link 
             key={link.name}
             href={link.href}
-            onClick={() => setActiveTab(link.id)}
+            onClick={() => setManualTab(link.id)}
             className={`
               relative h-full flex items-center px-6 border-r border-grid min-w-fit transition-colors
               ${activeTab === link.id ? 'bg-white text-ink' : 'bg-gray-50/50 text-gray-400 hover:bg-white hover:text-graphite'}

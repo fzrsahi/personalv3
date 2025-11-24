@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { ActiveCommandProvider } from "@/contexts/ActiveCommandContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,7 +28,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-paper text-ink selection:bg-sand/30 selection:text-ink`}
       >
-        {children}
+        <ActiveCommandProvider>
+          {children}
+        </ActiveCommandProvider>
       </body>
     </html>
   );

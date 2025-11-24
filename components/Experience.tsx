@@ -3,19 +3,79 @@
 import { experiences } from '@/data/resume';
 import { motion } from 'framer-motion';
 import { GitCommit, GitBranch, GitMerge } from 'lucide-react';
-import { useMemo } from 'react';
+import { useMemo, useEffect, useRef } from 'react';
+import { useActiveCommand } from '@/contexts/ActiveCommandContext';
 
 export const Experience = () => {
+  const { setActiveCommand } = useActiveCommand();
+  const sectionRef = useRef<HTMLElement>(null);
+  const command = "git log --graph --oneline";
+
   // Generate stable commit hashes for each experience
   const commitHashes = useMemo(() => {
-    return experiences.map((_, index) => {
-      // Use a simple hash function based on index for stability
-      const seed = index * 1000 + experiences.length;
-      return seed.toString(16).substr(0, 7);
-    });
+    const hashInput = (expIndex: number) => {
+      const exp = experiences[expIndex];
+      return `${exp.company}-${exp.role}-${exp.period}-${expIndex}`;
+    };
+
+    const toShortHash = (input: string) => {
+      let hash = 0;
+      for (let i = 0; i < input.length; i++) {
+        hash = (hash << 5) - hash + input.charCodeAt(i);
+        hash |= 0; // Convert to 32bit integer
+      }
+      return Math.abs(hash).toString(16).padStart(7, "0").slice(0, 7);
+    };
+
+    return experiences.map((_, index) => toShortHash(hashInput(index)));
   }, []);
+
+  // Intersection Observer to detect when section is in viewport
+  useEffect(() => {
+    const currentSection = sectionRef.current;
+    if (!currentSection) return;
+
+    const checkVisibility = () => {
+      const rect = currentSection.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const headerHeight = 48;
+      
+      // Section is active when it's visible in the upper portion of viewport
+      // Top of section should be below header and above 70% of viewport
+      const isInActiveZone = rect.top >= headerHeight && rect.top < windowHeight * 0.7 && rect.bottom > headerHeight + 50;
+      
+      if (isInActiveZone) {
+        setActiveCommand(command);
+      }
+    };
+
+    // Initial check with delay to ensure DOM is ready
+    const timeoutId = setTimeout(() => {
+      requestAnimationFrame(checkVisibility);
+    }, 150);
+
+    // Debounced scroll handler
+    let scrollTimeout: NodeJS.Timeout;
+    const handleScroll = () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        requestAnimationFrame(checkVisibility);
+      }, 10);
+    };
+
+    // Check on scroll and resize
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearTimeout(scrollTimeout);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [setActiveCommand, command]);
   return (
-    <section id="experience" className="py-24 px-6 md:px-12 border-t border-grid bg-paper">
+    <section ref={sectionRef} id="experience" className="py-24 px-6 md:px-12 border-t border-grid bg-paper">
       <div className="max-w-5xl mx-auto">
         <div className="flex items-center gap-3 mb-16 pb-4 border-b border-grid">
            <GitBranch className="text-sand" />

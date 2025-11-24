@@ -3,10 +3,14 @@
 import { skills } from '@/data/resume';
 import { motion } from 'framer-motion';
 import { Copy, Check } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useActiveCommand } from '@/contexts/ActiveCommandContext';
 
 export const Skills = () => {
   const [copied, setCopied] = useState(false);
+  const { setActiveCommand } = useActiveCommand();
+  const sectionRef = useRef<HTMLElement>(null);
+  const command = "stack.config.json";
 
   const handleCopy = () => {
     const json = JSON.stringify(skills, null, 2);
@@ -15,8 +19,53 @@ export const Skills = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Intersection Observer to detect when section is in viewport
+  useEffect(() => {
+    const currentSection = sectionRef.current;
+    if (!currentSection) return;
+
+    const checkVisibility = () => {
+      const rect = currentSection.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const headerHeight = 48;
+      
+      // Section is active when it's visible in the upper portion of viewport
+      // Top of section should be below header and above 70% of viewport
+      const isInActiveZone = rect.top >= headerHeight && rect.top < windowHeight * 0.7 && rect.bottom > headerHeight + 50;
+      
+      if (isInActiveZone) {
+        setActiveCommand(command);
+      }
+    };
+
+    // Initial check with delay to ensure DOM is ready
+    const timeoutId = setTimeout(() => {
+      requestAnimationFrame(checkVisibility);
+    }, 150);
+
+    // Debounced scroll handler
+    let scrollTimeout: NodeJS.Timeout;
+    const handleScroll = () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        requestAnimationFrame(checkVisibility);
+      }, 10);
+    };
+
+    // Check on scroll and resize
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearTimeout(scrollTimeout);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [setActiveCommand, command]);
+
   return (
-    <section id="skills" className="py-24 px-6 md:px-12 border-t border-grid bg-paper">
+    <section ref={sectionRef} id="skills" className="py-24 px-6 md:px-12 border-t border-grid bg-paper">
       <div className="max-w-5xl mx-auto">
         
         {/* File Header */}
