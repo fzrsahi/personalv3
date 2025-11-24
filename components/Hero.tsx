@@ -78,7 +78,7 @@ export const Hero = () => {
   }, [setActiveCommand, navbarCommand]);
 
   return (
-    <section ref={sectionRef} className="min-h-[90vh] pt-24 pb-12 px-6 md:px-12 flex flex-col justify-center bg-paper relative overflow-hidden">
+    <section ref={sectionRef} id="main" className="min-h-[90vh] pt-24 pb-12 px-6 md:px-12 flex flex-col justify-center bg-paper relative overflow-hidden">
        <div className="max-w-6xl w-full mx-auto z-10">
          {/* Terminal Window */}
          <div className="bg-white border-2 border-grid rounded-lg shadow-lg overflow-hidden">

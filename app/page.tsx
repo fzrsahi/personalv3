@@ -4,6 +4,7 @@ import { Experience } from "@/components/Experience";
 import { Skills } from "@/components/Skills";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
+import { BlogHighlight } from "@/components/BlogHighlight";
 
 export default function Home() {
   return (
@@ -17,8 +18,9 @@ export default function Home() {
         <div className="flex-1 flex flex-col divide-y divide-grid">
            <Hero />
            <Experience />
-           <Skills />
-           <Contact />
+          <Skills />
+          <BlogHighlight />
+          <Contact />
         </div>
         
         <Footer />

@@ -11,3 +11,14 @@ export interface SkillCategory {
   icon: 'code' | 'server' | 'cloud';
 }
 
+export interface BlogPost {
+  slug: string;
+  title: string;
+  date: string;
+  excerpt: string;
+  tags: string[];
+  readingTime: string;
+  content: string[];
+  imageUrls?: string[];
+}
+
