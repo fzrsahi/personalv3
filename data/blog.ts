@@ -71,5 +71,39 @@ export const blogPosts: BlogPost[] = [
       "Intinya, generative AI itu kayak asisten kreatif yang siaga 24 jam. Siapa pun kamu, guru, mahasiswa, pekerja, atau content creator, AI bisa banget jadi alat bantu harian. Yuk, coba pakai tanpa ragu. Siapa tau, pulang-pulang udah dapat ide cemerlang atau kerjaan lebih cepat selesai."
     ],
   },
+  {
+    slug: "late-night-cognitive-drift",
+    title: "Jam 3 sore Saya Biasa Aja, Tapi Jam 3 Malam Saya Ingin Jadi Superman",
+    date: "2024-11-20",
+    excerpt:
+      "Jam 3 sore hidup tenang. Jam 3 malam lain cerita",
+    tags: ["algorithm", "data", "psychology"],
+    readingTime: "6 menit",
+    imageUrls: [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpn2et0dIgJZ_SZJbypxvdhRES7YCQKYDRsw&s",
+      "https://images3.memedroid.com/images/UPLOADED83/5ff1dac54c5c8.jpeg",
+    ],
+    content: [
+      "Jam 3 sore hidup tenang. Algoritma melihat kita sebagai manusia normal yang cuma scroll sebentar lalu lanjut aktivitas. Tidak ada drama, tidak ada ambisi aneh, tidak ada rencana tiba tiba mau mengubah dunia.",
+      "",
+      "Jam 3 malam lain cerita. Kita rebahan sambil ngantuk, lihat FYP TikTok satu video motivasi, dan tiba tiba muncul ambisi ingin workout, belajar bisnis, belajar crypto, jadi produktif, atau merasa bisa jadi Superman besok pagi. Padahal barusan kita hampir ketiduran sambil megang HP.",
+      "",
+      "Sebelum jauh, ada satu hal penting untuk dipahami. Algoritma itu sebenarnya cuma rangkaian instruksi dan kode yang ditulis di komputer. Tidak punya wujud fisik, tidak punya bentuk, tidak punya suara. Hanya logika, perhitungan, dan pola yang bekerja sangat cepat.",
+      "",
+      "Inilah bagian yang kadang bikin merinding. Inilah seberapa powerfull matematika. Bayangin saja, hanya dari matematika + jago coding + statistika, bisa ngerubah jalan hidup orang. Tidak ada mantra, tidak ada psikolog, hanya angka dan pola.",
+      "",
+      "Kalau kita lihat lebih besar, kekuatan ini sudah terbukti. Google pada tahun 2000 mengalahkan hampir semua mesin pencari lain hanya dengan PageRank, sebuah algoritme yang menilai pentingnya halaman lewat pola link. Dari garasi kecil langsung berubah jadi pusat internet. Semua dimulai dari logika matematika yang tidak punya wujud fisik.",
+      "",
+      "Contoh lain bahkan lebih ekstrem. Linus Torvalds menulis kernel kecil bernama Linux. Tidak ada UI mewah, tidak ada modal besar. Hanya kode dan algoritme sistem yang rapi. Sekarang Linux jadi fondasi hampir seluruh internet, dari server Google sampai miliaran perangkat. Satu algoritma bisa memegang dunia.",
+      "",
+      "Setelah melihat betapa kuatnya algoritma dalam skala besar, kita kembali ke diri kita sendiri. Kenapa jam malam membuat kita berubah begitu mudah.",
+      "",
+      "Jawabannya karena algoritma membaca perubahan kecil dalam perilaku kita. Di jam malam durasi nonton naik, swipe melambat, dan reaksi lebih emosional. Dalam kacamata engineer, ini disebut sinyal berat. Model rekomendasi langsung menganggap ini preferensi baru yang penting.",
+      "",
+      "Efeknya konten berubah total. Bukan karena mesin bisa membaca jiwa, tetapi karena machine learning menghubungkan pola kita dengan jutaan pengguna lain yang juga emosional di malam hari. Studi dari University of Pennsylvania menyebut fenomena ini sebagai “late night cognitive drift”, kondisi ketika manusia lebih impulsif saat malam dan algoritma memanfaatkannya.",
+      "",
+      "Akhirnya konten terasa sangat pas. Terlalu pas sampai bisa mengubah perspektif. Padahal semuanya hanya matematika yang berjalan di jam ketika kita sedang paling lemah dan kita hanya butuh tidur."
+    ],
+  },
 ];
 
